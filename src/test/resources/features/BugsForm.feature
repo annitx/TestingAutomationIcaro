@@ -1,36 +1,36 @@
 @BugsForm
-Feature: Completar formulario
+Feature: User Registration on Buggy Cars Rating Website
+  As a new user
+  I want to register on the Buggy Cars Rating website
+  So that I can log in and participate in the platform
 
-  Background:
-    Given el usuario se encuentra en la home de BugsForm
-
-  @BugsFormOk
-  Scenario Outline: El usuario completa los datos con valores correctos
-    When el usuario ingresa First Name "<FirstName>"
-    And el usuario ingresa Last Name "<LastName>"
-    And el usuario ingresa Phone number "<Phonenumber>"
-    And el usuario ingresa Country "<Country>"
-    And el usuario ingresa Email address "<EmailAddress>"
-    And el usuario ingresa Email Password "<Password>"
-    And el usuario hace clic boton Register
-    Then el usuario visualiza el mensaje "<msjValidacion>"
-
-    Examples:
-      | FirstName | LastName | Phonenumber   | Country   | EmailAddress     | Password   | msjValidacion |
-      | Clara      | Freire    | 3512323123    | Argentina | freire@gmail.com  | 123Usuario | Successfully registered the following information  |
-
-  @BugsFormErrorTelefono
-  Scenario Outline: El usuario ingresa un número de teléfono inválido
-    When el usuario ingresa First Name "<FirstName>"
-    And el usuario ingresa Last Name "<LastName>"
-    And el usuario ingresa Phone number "<Phonenumber>"
-    And el usuario ingresa Country "<Country>"
-    And el usuario ingresa Email address "<EmailAddress>"
-    And el usuario ingresa Email Password "<Password>"
-    And el usuario hace clic boton Register
-    Then el usuario visualiza el mensaje "<msjValidacion>"
+  Scenario Outline: Successful registration with valid details
+    Given I am on the registration page
+    When I fill in the registration form with the following details:
+      | username        | <username>       |
+      | firstName       | <firstName>      |
+      | lastName        | <lastName>       |
+      | password        | <password>       |
+      | confirmPassword | <confirmPassword> |
+    And I click the Register button
+    Then I should see the success message "<successMessage>"
 
     Examples:
-      | FirstName | LastName | Phonenumber | Country   | EmailAddress  | Password | msjValidacion|
-      | Anahi       | Marc     | 12345       | Argentina | ana@test.com  | pass123  | The phone number should contain at least 10 characters! |
+      | username      | firstName | lastName | password  | confirmPassword | successMessage              |
+      | testuse023   | John      | Doe      | Test@1234 | Test@1234       | Registration is successful  |
 
+  Scenario Outline: Registration with invalid details
+    Given I am on the registration page
+    When I fill in the registration form with the following details:
+      | username        | <username>       |
+      | firstName       | <firstName>      |
+      | lastName        | <lastName>       |
+      | password        | <password>       |
+      | confirmPassword | <confirmPassword> |
+    And I click the Register button
+    Then I should see the error message "<errorMessage>"
+
+    Examples:
+      | username        | firstName | lastName | password  | confirmPassword | errorMessage                  |
+      | testuser016     | Jane      | Doe      | Test@1234 | Test@1234       | UsernameExistsException: User already exists |
+      | testuser003     | John      | Smith    | Test@1234 | Pass@5678       | Passwords do not match         |

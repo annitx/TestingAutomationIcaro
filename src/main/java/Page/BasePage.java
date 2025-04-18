@@ -34,7 +34,7 @@ public class BasePage {
         WebElement webElement = driver.findElement(By.xpath(xpath));
         webElement.clear();
         webElement.sendKeys(texto);
-}
+    }
     // Método para clicBoton Registrarse
     public void clicByID(String idElement) {
         WebElement webElement = driver.findElement(By.id(idElement));
@@ -47,6 +47,33 @@ public class BasePage {
         return elemento.getText();
     }
 
+
+
+    /**
+     * Hace clic en un elemento identificado por su XPath.
+     *
+     * @param xpath El XPath del elemento
+     */
+    public void clicByXpath(String xpath) {
+        WebElement webElement = driver.findElement(By.xpath(xpath));
+        webElement.click();
+    }
+
+    /**
+     * Recupera el texto de un elemento identificado por su clase.
+     *
+     * @param className El nombre de la clase del elemento
+     * @return El texto del elemento
+     */
+    public String getTextByClass(String className) {
+        System.out.println("[Debug] Buscando mensaje por clase: " + className);
+        try {
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+            WebElement elemento = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className(className)));
+            return elemento.getText();
+        } catch (Exception e) {
+            System.err.println("[Error] No se encontró el elemento con clase: " + className);
+            return ""; // Devuelve una cadena vacía si ocurre una excepción
+        }
+    }
 }
-
-
